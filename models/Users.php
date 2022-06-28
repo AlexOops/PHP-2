@@ -4,6 +4,13 @@ namespace app\models;
 
 class Users extends Model
 {
+    public $id;
+    public $login;
+    public $pass;
+    public $hash;
 
-    protected $tableName = "Users";
+    public function getTableName()
+    {
+        return "users";
+    }
 }

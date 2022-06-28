@@ -4,13 +4,17 @@ namespace app\models;
 
 class Products extends Model
 {
-    protected $id;
-    protected $name;
-    protected $description;
-    protected $img;
-    protected $likes;
+    public $id;
+    public $name;
+    public $description;
+    public $img;
+    public $likes;
 
-    protected $tableName = "products";
 
+
+    public function getTableName()
+    {
+        return "products";
+    }
 }
 

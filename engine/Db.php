@@ -2,16 +2,16 @@
 
 namespace app\engine;
 
-class Db extends \app\models\Db
+class Db
 {
     //1
-    public function queryOne($sql)
+    public static function queryOne($sql)
     {
         return $sql ."<br>";
     }
 
     //all
-    public function queryAll($sql)
+    public static function queryAll($sql)
     {
         return $sql ."<br>";
     }
