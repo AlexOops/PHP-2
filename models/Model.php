@@ -24,14 +24,14 @@ abstract class Model implements IModel
     public function getOne($id)
     {
         $tableName = $this->getTableName();
-        $sql = "SELECT * FROM {$tableName} WHERE id = {$id}";
-        return Db::queryOne($sql);
+        $sql = "SELECT * FROM {$tableName} WHERE id = :id";
+        return Db::queryOne($sql, ['id' => $id]);
     }
 
     public function getAll()
     {
         $tableName = $this->getTableName();
         $sql = "SELECT * FROM {$tableName}";
-        return  Db::queryAll($sql);
+        return Db::queryAll($sql);
     }
 }

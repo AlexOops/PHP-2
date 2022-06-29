@@ -1,14 +1,14 @@
 <?php
+
 namespace app\engine;
+
+use app\config\Config;
 
 class Autoload
 {
     public function loadClass($className)
     {
-        $filename = "{$className}.php";
-        $path = str_replace('app',"../", $filename); //посмотреть детально левые на правые
-        $path = str_replace('\\',"/", $path);
-
+        $path = str_replace(['app\\', '\\'], [Config::DIR . Config::DS, Config::DS], $className) . ".php";
         if (file_exists($path)) {
             include $path;
         }
