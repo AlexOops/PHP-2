@@ -21,17 +21,34 @@ abstract class Model implements IModel
         return $this->$name = $value;
     }
 
+    public function insert()
+    {
+        $fields = [];
+        $params = [];
+        foreach ($this as $key => $value) {
+            if ($key == "id") continue;
+            $fields[] = $key;
+            $values[] = $value;
+        }
+        $fields = implode(", ", $fields);
+        $values = "'" . implode("', '", $values) . "'";
+        $tableName = $this->getTableName();
+        $sql = "INSERT INTO {$tableName}({$fields})VALUE ({$params})";
+
+
+    }
+
     public function getOne($id)
     {
         $tableName = $this->getTableName();
         $sql = "SELECT * FROM {$tableName} WHERE id = :id";
-        return Db::queryOne($sql, ['id' => $id]);
+        return Db::getInstance()->queryOne($sql, ['id' => $id]); //getInstance() позволит статично обратиться к Db
     }
 
     public function getAll()
     {
         $tableName = $this->getTableName();
         $sql = "SELECT * FROM {$tableName}";
-        return Db::queryAll($sql);
+        return Db::getInstance()->queryAll($sql);
     }
 }

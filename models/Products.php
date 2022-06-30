@@ -10,6 +10,13 @@ class Products extends Model
     public $img;
     public $likes;
 
+    public function __construct($name = null, $description = null, $img = null, $likes = null)
+    {
+        $this->name = $name;
+        $this->description = $description;
+        $this->img = $img;
+        $this->likes = $likes;
+    }
 
 
     public function getTableName()

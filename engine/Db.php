@@ -2,8 +2,12 @@
 
 namespace app\engine;
 
+use app\traits\TSingleton;
+
 class Db
 {
+    use TSingleton; // Db стал Singleton
+
     private $config = [
         'driver' => 'mysql',
         'host' => 'localhost',
@@ -46,19 +50,19 @@ class Db
     }
 
     //1
-    public static function queryOne($sql, $params = []) // принимает из модели и вызывает query
+    public function queryOne($sql, $params = []) // принимает из модели и вызывает query
     {
-        return (new Db)->query($sql, $params)->fetch(); // fetch вернет данные в ввиде ассоциативного массива
+        return $this->query($sql, $params)->fetch(); // fetch вернет данные в ввиде ассоциативного массива
     }
 
     //all
-    public static function queryAll($sql, $params = [])
+    public function queryAll($sql, $params = [])
     {
-        return (new Db)->query($sql, $params)->fetchAll(); // вернет двумерный(ключ => значение) массив
+        return $this->query($sql, $params)->fetchAll(); // вернет двумерный(ключ => значение) массив
     }
 
-    public static function execute($sql, $params = [])
+    public function execute($sql, $params = [])
     {
-        return (new Db)->query($sql, $params)->rowCount(); // вернет число затронутых строк
+        return $this->query($sql, $params)->rowCount(); // вернет число затронутых строк
     }
 }
