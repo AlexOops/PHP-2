@@ -1,25 +1,23 @@
 <?php
+include "../config/Config.php";
 include "../engine/Autoload.php";
 
-//todo Доделать autoload через USE
 use app\engine\{Db, Autoload};
-use app\models\{Users, Products, Db as Db2, Model};
+use app\models\{Users, Products, Basket, Feedbacks, Orders};
 
 
-spl_autoload_register([new Autoload, 'loadClass']); // магический метод
+spl_autoload_register([new Autoload(), 'loadClass']); // магический метод
 
 
-$db1 = new Db();
-$db2 = new Db2(); //models
+$products = new Products("Boat",100, "The fastest","img4.jpg", 0);
+//$products->insert();
+//$products->remove(6);
 
-$products = new Products($db1);
-$users = new Users($db1);
-$db = new Db;
 
-echo $products->getOne(2);
-echo $products->getAll();
-echo $users->getOne(1);
-echo $users->getAll();
+//$user = new Users('user1', 123, 123);
+//$user->insert();
+
+
 
 
 
