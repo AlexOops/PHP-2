@@ -2,14 +2,14 @@
 
 namespace app\models;
 
-class feedbacks extends Model
+class feedbacks extends DBModel
 {
     public $id;
     public $name;
     public $feedback;
     public $id_product;
 
-    public function getTableName()
+    public static function getTableName()
     {
         return "feedbacks";
     }

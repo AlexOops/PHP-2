@@ -8,12 +8,19 @@ use app\models\{Users, Products, Basket, Feedbacks, Orders};
 
 spl_autoload_register([new Autoload(), 'loadClass']); // магический метод
 
+/** @var Products $products */
+
+//$products = new Products("boat12",100, "The fastest","img4.jpg", 0);
+//$products->insert();
+
+
+//$products = Products::getOne(6);
+//$products->price = 333;
+//$products->update();
+
+//$products->delete();
 
 
 
-
-$products = new Products("Лодка с мотором", "Быстрая, классная, удобная","img4.jpg", "0");
-var_dump($products->insert());
-//var_dump($products->getOne(2));
 
 
