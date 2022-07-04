@@ -45,7 +45,7 @@ class Db
 
     public function lastInsertId()
     {
-        $this->getConnection()->lastInsertId();
+        return $this->getConnection()->lastInsertId();
     }
 
     // подготовка любого запроса. params = where id = 1
@@ -60,6 +60,14 @@ class Db
     public function queryOne($sql, $params = []) // принимает из модели и вызывает query
     {
         return $this->query($sql, $params)->fetch(); // fetch вернет данные в ввиде ассоциативного массива
+    }
+
+    //obj
+    public function queryOneObject($sql, $params, $class)
+    {
+        $STH = $this->query($sql, $params);
+        $STH->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, $class);
+        return $STH->fetch();
     }
 
     //all

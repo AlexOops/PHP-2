@@ -11,8 +11,12 @@ spl_autoload_register([new Autoload(), 'loadClass']); // магический м
 
 $products = new Products("Boat",100, "The fastest","img4.jpg", 0);
 //$products->insert();
-//$products->remove(6);
+//$products->remove($products->id);
+$products->update($products->id);
 
+
+//$products->remove();
+//$products->update();
 
 //$user = new Users('user1', 123, 123);
 //$user->insert();

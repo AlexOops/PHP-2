@@ -21,12 +21,25 @@ abstract class Model implements IModel
         return $this->$name = $value;
     }
 
-    public function update()
+    public function insert()
     {
-
+        $fields = [];
+        $params = [];
+        foreach ($this as $key => $value) {
+            if ($key == "id") continue;
+            $fields[] = $key;
+            $params[":$key"] = $this->$key; // посмотреть
+        }
+        $fields = implode(", ", $fields);
+        $values = implode(", ", array_keys($params)); // по ключам :value :value
+        $tableName = $this->getTableName();
+        $sql = "INSERT INTO {$tableName}({$fields})VALUES({$values})";
+        Db::getInstance()->execute($sql, $params);
+        $this->id = Db::getInstance()->lastInsertid(); //  записали в этот объект id
+        return $this;
     }
 
-    public function insert()
+    public function update($id)
     {
         $fields = [];
         $params = [];
@@ -38,9 +51,11 @@ abstract class Model implements IModel
         $fields = implode(", ", $fields);
         $values = implode(", ", array_keys($params)); // по ключам :value :value
         $tableName = $this->getTableName();
-        $sql = "INSERT INTO {$tableName}({$fields})VALUES({$values})";
+
+//        UPDATE `products` SET `id`='[value-1]',`name`='[value-2]',`price`='[value-3]',`description`='[value-4]',`img`='[value-5]',`likes`='[value-6]' WHERE 1
+        $sql = "UPDATE {$tableName} SET {$fields}{$values} WHERE 'id' => {$id}";
+        var_dump($sql);
         Db::getInstance()->execute($sql, $params);
-        Db::getInstance()->lastInsertid();
         return $this;
     }
 
@@ -48,14 +63,16 @@ abstract class Model implements IModel
     {
         $tableName = $this->getTableName();
         $sql = "DELETE FROM {$tableName} WHERE id = :id";
-        return Db::getInstance()->execute($sql, ['id' => $id]);
+        $count = Db::getInstance()->execute($sql, ['id' => $id]);
+        print("Удалено $count строк.\n");
     }
 
     public function getOne($id)
     {
         $tableName = $this->getTableName();
         $sql = "SELECT * FROM {$tableName} WHERE id = :id";
-        return Db::getInstance()->queryOne($sql, ['id' => $id]); //getInstance() позволит статично обратиться к Db
+//        return Db::getInstance()->queryOne($sql, ['id' => $id]); //getInstance() позволит статично обратиться к Db
+        return Db::getInstance()->queryOneObject($sql, ['id' => $id], get_called_class()); // Вернет объект
     }
 
     public function getAll()
