@@ -4,12 +4,20 @@ namespace app\models;
 
 class Products extends DBModel
 {
-    public $id;
-    public $name;
-    public $price;
-    public $description;
-    public $img;
-    public $likes;
+    protected $id;
+    protected $name;
+    protected $price;
+    protected $description;
+    protected $img;
+    protected $likes;
+
+    protected $props = [ // свойства чтобы отловить update
+        "name" => false,
+        "price" => false,
+        "description" => false,
+        "img" => false,
+        "likes" => false,
+    ];
 
     public function __construct($name = null, $price = null, $description = null, $img = null, $likes = null)
     {

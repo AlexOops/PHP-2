@@ -12,14 +12,17 @@ abstract class DBModel extends Model
     {
         $fields = [];
         $params = [];
-        foreach ($this as $key => $value) {
-            if ($key == "id") continue;
+
+        foreach ($this->props as $key => $value) {
+            if ($key == "id") continue; // обойти это тело по другому
             $fields[] = $key;
-            $params[":$key"] = $value; // посмотреть
+            $params[":$key"] = $this->$key; // из ключа имя поля
         }
+
         $fields = implode(", ", $fields);
         $values = implode(", ", array_keys($params)); // по ключам :value :value
         $tableName = $this->getTableName();
+
         $sql = "INSERT INTO {$tableName}({$fields})VALUES({$values})";
         Db::getInstance()->execute($sql, $params);
         $this->id = Db::getInstance()->lastInsertid(); //  записали в этот объект id
@@ -30,18 +33,19 @@ abstract class DBModel extends Model
     {
         $fields = [];
         $params = [];
-        foreach ($this as $key => $value) {
-            if ($key == "id") continue;
-            $fields[] = $key;
-            $params[":$key"] = $value;
-        }
-        $fields = implode(", ", $fields);
-        $values = implode(", ", array_keys($params)); // по ключам :value :value
-        $tableName = static::getTableName();
 
-//        UPDATE `products` SET `id`='[value-1]',`name`='[value-2]',`price`='[value-3]',`description`='[value-4]',`img`='[value-5]',`likes`='[value-6]' WHERE 1
-        $sql = "UPDATE {$tableName} SET {$fields}{$values} WHERE 'id' => {$this->id}";
-        var_dump($sql);
+        foreach ($this->props as $key => $value) {
+            if (!$value) continue; // игнорируем поле, которое не встретилось
+            $fields["$key"] .= "{$key} = :{$key}"; // SET('name')('name'=':name')
+            $params[":$key"] = $this->$key;
+            $this->props[$key] = false;
+        }
+
+        $tableName = static::getTableName();
+        $fields = implode(", ", $fields);
+        $params['id'] = $this->id;
+
+        $sql = "UPDATE {$tableName} SET {$fields} WHERE id = :id";
         Db::getInstance()->execute($sql, $params);
         return $this;
     }
@@ -51,13 +55,16 @@ abstract class DBModel extends Model
         $tableName = static::getTableName();
         $sql = "DELETE FROM {$tableName} WHERE id = :id";
         $count = Db::getInstance()->execute($sql, ['id' => $this->id]);
-        echo("Удалено $count строк.\n"); // пофиксить, не должны возвращать echo
+        return print_r("Удалено $count строк.\n"); // пофиксить
     }
 
     public function save()
     {
-        // TODO вызвать либо insert либо update
-        // проверить $this->id, если определен - update, если не определен - insert
+        if (is_null($this->id)) {
+            $this->insert();
+        } else {
+            $this->update();
+        }
     }
 
     public static function getOne($id)
@@ -69,7 +76,7 @@ abstract class DBModel extends Model
         if ($result) {
             return $result;
         } else {
-            echo "Опа, ошибочка -_-"; // пофиксить, не должны возвращать echo
+            return print_r("Опа, ошибочка -_-");// пофиксить
         }
     }
 

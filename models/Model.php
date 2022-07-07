@@ -3,11 +3,12 @@
 namespace app\models;
 
 use app\interfaces\IModel;
-use app\engine\Db;
 
 
 abstract class Model implements IModel
 {
+    protected $props = []; //обнуляем, чтобы был доступен
+
     public function __get($value)
     {
         return $this->$value;
@@ -15,6 +16,7 @@ abstract class Model implements IModel
 
     public function __set(string $name, $value)
     {
+        $this->props[$name] = true; // по ключу в true
         return $this->$name = $value;
     }
 }
