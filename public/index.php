@@ -4,20 +4,22 @@ include "../engine/Autoload.php";
 
 use app\engine\{Db, Autoload};
 use app\models\{Users, Products, Basket, Feedbacks, Orders};
-
+use app\config\Config;
 
 spl_autoload_register([new Autoload(), 'loadClass']); // магический метод
 
+$controllerName = $_GET['c'] ?? 'product';
+$actionName = $_GET['a'] ?? '';
 
-//$products = new Products("boat12",100, "The fastest","img4.jpg", 0);
-//$products->save();
+$controllerClass = Config::CONTROLLER_NAMESPACE . ucfirst($controllerName) . "Controller";
 
-//$products = Products::getOne(2);
-//$products->price = 333;
-//$products->save();
-
-//$products->delete();
-
+// минироутинг
+if (class_exists($controllerClass)) {
+    $controller = new $controllerClass;
+    $controller->runAction($actionName); // передали в управление роутеру
+} else {
+    die("404");
+}
 
 
 
