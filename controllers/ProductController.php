@@ -1,44 +1,29 @@
 <?php
 
 namespace app\controllers;
+use app\models\Products;
 
-use app\config\Config;
-
-class ProductController
+class ProductController extends Controller
 {
-    private $action;
-    private $defaultAction = "catalog";
+    protected $defaultAction = "index";
 
-    public function runAction($action)
+    public function actionCatalog() // весь каталог
     {
-        $this->action = $action ?? $this->defaultAction;
-        $method = "action" . ucfirst($this->action);
-        if (method_exists($this, $method)) { // проверка на существование метода
-            $this->$method(); // динамически вызываем из переменной
-        }
+        $page = $_GET['page'] ?? 0;
+        //TODO сделать через Object
+        $products = Products::getLimit(($page + 1) * 2);
+        echo $this->render('catalog', [
+            'products' => $products,
+            'page' => ++$page,
+        ]);
     }
 
-    public function renderIndex()
+    public function actionProduct() // один продукт
     {
-        echo $this->renderTemlate('index');
-    }
-
-    public function actionCatalog()
-    {
-        echo "product";
-    }
-
-    public function actionProduct()
-    {
-        echo "card";
-    }
-
-    public function renderTemlate($template, $params) // ($шабон, $значение переменных для подстановки)
-    {
-        ob_start(); // вкл буфер
-        extract($params);
-        $templatePath = Config::VIEWS_DIR . $template . "php";
-        include $templatePath;
-        return ob_get_clean(); // возвращает весь HTML и очищает
+        $id = $_GET['id'];
+        $product = Products::getOne($id);
+        echo $this->render('product', [
+            'product' => $product
+        ]);
     }
 }

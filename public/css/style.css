@@ -1,0 +1,45 @@
+* {
+    margin: 0;
+}
+
+.welcome {
+
+}
+
+.products {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin-bottom: 20px;
+    padding: 10px 10px;
+}
+
+.product { /* карточка товара */
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    max-width: 600px;
+    margin-bottom: 20px;
+    padding: 10px 10px;
+}
+
+.product__name {
+    font-weight: bold;
+}
+
+.product__descr {
+    text-align: justify;
+    margin-bottom: 10px;
+}
+
+.product__price {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.basket {
+    border: 1px solid black;
+    width: 170px;
+    text-align: center;
+    padding-bottom: 10px;
+}

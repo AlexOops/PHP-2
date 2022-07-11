@@ -9,10 +9,9 @@ use app\config\Config;
 spl_autoload_register([new Autoload(), 'loadClass']); // магический метод
 
 $controllerName = $_GET['c'] ?? 'product';
-$actionName = $_GET['a'] ?? '';
+$actionName = $_GET['a'];
 
 $controllerClass = Config::CONTROLLER_NAMESPACE . ucfirst($controllerName) . "Controller";
-
 // минироутинг
 if (class_exists($controllerClass)) {
     $controller = new $controllerClass;

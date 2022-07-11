@@ -1,1 +1,1 @@
-Welcome!
+<h2 class="welcome">Welcome!</h2>
