@@ -19,4 +19,10 @@ abstract class Model implements IModel
         $this->props[$name] = true; // по ключу в true
         return $this->$name = $value;
     }
+
+    public function __isset($name)
+    {
+        //todo implements __isset() method
+        //return isset($this->name)
+    }
 }

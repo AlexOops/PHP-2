@@ -4,9 +4,7 @@ namespace app\controllers;
 
 class AboutController extends Controller
 {
-    protected $defaultAction = "about";
-
-    public function actionAbout()
+    public function actionIndex()
     {
         echo $this->render('about');
     }

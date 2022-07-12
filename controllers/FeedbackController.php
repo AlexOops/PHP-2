@@ -6,9 +6,7 @@ use app\models\Feedbacks;
 
 class FeedbackController extends Controller
 {
-    protected $defaultAction = "feedback";
-
-    public function actionFeedback()
+    public function actionIndex()
     {
         $feedbacks = Feedbacks::getAll();
         echo $this->render('feedback', [

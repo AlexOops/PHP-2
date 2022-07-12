@@ -2,15 +2,20 @@
 
 namespace app\controllers;
 
-use app\config\Config;
-use app\models\Products;
+use app\interfaces\IRender;
 
 abstract class Controller
 {
-    protected $action;
-    protected $defaultAction = "index";
-    protected $layout = "main";
-    protected $useLayout = true;
+    private $action;
+    private $defaultAction = "index";
+    private $layout = "main";
+    private $useLayout = true;
+    protected $render;
+
+    public function __construct(IRender $render) // передаем снаружи
+    {
+        $this->render = $render; // содаем экз
+    }
 
     public function runAction($action)
     {
@@ -21,29 +26,20 @@ abstract class Controller
         }
     }
 
-    public function actionIndex()
-    {
-        echo $this->render('index');
-    }
-
     public function render($template, $params = [])
     {
         if ($this->useLayout) {
-            return $this->renderTemlate("layout/" . $this->layout, [ //собирает main
-                'menu' => $this->renderTemlate('menu', $params),
-                'content' => $this->renderTemlate($template, $params),
+            return $this->renderTemplate("layout/" . $this->layout, [ //собирает main
+                'menu' => $this->renderTemplate('menu', $params),
+                'content' => $this->renderTemplate($template, $params),
             ]);
         } else {
-            return $this->renderTemlate($template, $params = []);
+            return $this->renderTemplate($template, $params);
         }
     }
 
-    public function renderTemlate($template, $params = []) // ($шабон, $значение переменных для подстановки)
+    public function renderTemplate($template, $params = [])
     {
-        ob_start(); // вкл буфер
-        extract($params);
-        $templatePath = Config::VIEWS_DIR . $template . ".php"; //собирается имя
-        include $templatePath;
-        return ob_get_clean(); // возвращает весь HTML и очищает
+        return $this->render->renderTemplate($template, $params);
     }
 }
