@@ -2,11 +2,11 @@
 include "../config/Config.php";
 include "../engine/Autoload.php";
 
-use app\engine\{Db, Autoload, Render};
+use app\engine\{Db, Autoload, Render, TwigRender};
 use app\models\{Users, Products, Basket, Feedbacks, Orders};
 use app\config\Config;
 
-require_once "../vendor/autoload.php";
+require_once "../vendor/autoload.php"; // регистрируется автозагрузчик
 
 spl_autoload_register([new Autoload(), 'loadClass']); // магический метод
 
