@@ -94,4 +94,11 @@ abstract class DBModel extends Model
         return Db::getInstance()->queryAll($sql);
 
     }
+
+    public static function getOneWhere($name, $value) // авторизация
+    {
+        $tableName = static::getTableName();
+        $sql = "SELECT * FROM {$tableName} WHERE {$name} = :value";
+        return Db::getInstance()->queryOneObject($sql, ['value' => $value], static::class);
+    }
 }

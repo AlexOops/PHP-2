@@ -1,3 +1,18 @@
+<div class="login">
+    {% if isAuth %}
+        <div class="">
+            <p>Добро пожаловать {{ username }}</p><a href="/auth/logout">[Выход]</a>
+        </div>
+    {% else %}
+        <form action="/auth/login" method="post">
+            <input type="text" name="login" value="admin">
+            <input type="password" name="pass" value="">
+            <input type="checkbox" name="save">
+            <input type="submit" value="ok">
+        </form>
+    {% endif %}
+</div>
+
 <a href="/">Главная</a>
 <a href="/?c=product&a=catalog">Каталог</a>
 <a href="/?c=feedback">Отзывы</a>

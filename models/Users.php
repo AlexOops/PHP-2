@@ -22,6 +22,31 @@ class Users extends DBModel
         $this->hash = $hash;
     }
 
+    public static function auth($login, $pass)
+    {
+        $user = Users::getOneWhere('login', $login);
+        if ($user && password_verify($pass, $user->pass)) {
+            $_SESSION['login'] = $login;
+            return true;
+        }
+        return false;
+    }
+
+    public static function isAuth() // проверка на логин
+    {
+        return isset($_SESSION['login']);
+    }
+
+    public static function isAdmin() // проверка на админа
+    {
+        return $_SESSION['login'] == 'admin';
+    }
+
+    public static function getName() // имя залог пользователя
+    {
+        return $_SESSION['login'];
+    }
+
     public static function getTableName()
     {
         return "users";

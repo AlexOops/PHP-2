@@ -22,7 +22,6 @@ abstract class Model implements IModel
 
     public function __isset($name)
     {
-        //todo implements __isset() method
-        //return isset($this->name)
+        return isset($this->name);
     }
 }

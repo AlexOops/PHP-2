@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\interfaces\IRender;
+use app\models\Users;
 
 abstract class Controller
 {
@@ -30,7 +31,11 @@ abstract class Controller
     {
         if ($this->useLayout) {
             return $this->renderTemplate("layout/" . $this->layout, [ //собирает main
-                'menu' => $this->renderTemplate('menu', $params),
+                'menu' => $this->renderTemplate('menu', [
+                    'isAuth' => Users::isAuth(), // залогинен ли
+                    'username' => Users::getName(), // вернет имя польователя
+
+                ]),
                 'content' => $this->renderTemplate($template, $params),
             ]);
         } else {
