@@ -20,7 +20,7 @@ $actionName = $request->getActionName();
 $controllerClass = Config::CONTROLLER_NAMESPACE . ucfirst($controllerName) . "Controller";
 // минироутинг
 if (class_exists($controllerClass)) {
-    $controller = new $controllerClass(new TwigRender());
+    $controller = new $controllerClass(new TwigRender()); // Render()
     $controller->runAction($actionName); // передали в управление роутеру
 } else {
     die("404");

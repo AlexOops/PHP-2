@@ -8,17 +8,16 @@ use Twig\Loader\FilesystemLoader;
 
 class TwigRender implements IRender
 {
-//    public $twig;
-//
-//    public function __construct(\Twig\Environment $twig)
-//    {
-//        $this->twig = $twig;
-//    }
+    protected $twig;
+
+    public function __construct()
+    {
+        $loader = new \Twig\Loader\FilesystemLoader('../templates');
+        $this->twig = new \Twig\Environment($loader);
+    }
 
     function renderTemplate($template, $params = [])
     {
-        $loader = new \Twig\Loader\FilesystemLoader('../templates');
-        $twig = new \Twig\Environment($loader);
-        return $twig->render($template . ".twig", $params);
+        return $this->twig->render($template . ".twig", $params);
     }
 }
