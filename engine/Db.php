@@ -56,6 +56,15 @@ class Db
         return $STH;
     }
 
+    //limit
+    public function queryLimit($sql, $limit)
+    {
+        $STH = $this->getConnection()->prepare($sql);
+        $STH->bindValue(1, $limit, \PDO::PARAM_INT); //тип, чтобы убрать кавычки
+        $STH->execute();
+        return $STH;
+    }
+
     //1
     public function queryOne($sql, $params = []) // принимает из модели и вызывает query
     {
@@ -78,6 +87,7 @@ class Db
 
     public function execute($sql, $params = [])
     {
+        var_dump($sql, $params);
         return $this->query($sql, $params)->rowCount(); // вернет число затронутых строк
     }
 }

@@ -1,0 +1,17 @@
+<h2>Каталог товаров</h2>
+
+{% for product in products %}
+
+    <form action="/basket/add/" method="post">
+        <div class="products">
+            <input type="text" name="id" value="{{ product.id }}" hidden>
+            <img src="/img/{{ product.img }}" alt=" {{ product.img }} " width="150px" height="150px">
+            <a href="/products/product/?id={{ product.id }}">{{ product.name }}</a>
+            <p>price: {{ product.price }}</p>
+            <button type="submit">Купить</button>
+        </div>
+    </form>
+
+{% endfor %}
+
+<a href="/products/catalog/?page={{ page | raw }}">ЕЩЕ</a>

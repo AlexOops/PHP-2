@@ -2,14 +2,20 @@
 
 namespace app\models;
 
-class Orders extends Model
+class Orders extends DBModel
 {
-    public $id;
-    public $name;
-    public $phone;
-    public $id_session;
+    protected $id;
+    protected $name;
+    protected $phone;
+    protected $id_session;
 
-    public function getTableName()
+    protected $props = [
+        "name" => false,
+        "phone" => false,
+        "id_session" => false,
+    ];
+
+    public static function getTableName()
     {
         return "orders";
     }

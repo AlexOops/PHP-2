@@ -1,0 +1,14 @@
+<h2>Корзина</h2>
+{% if basket is empty %}
+    <p>Корзина пустая</p>
+{% else %}
+    {% for product in basket %}
+        <div class="basket">
+            <p>{{ product.product_name }}</p>
+            <img src="/img/{{ product.img }}" alt="{{ product.img }}" width="150">
+            <p>{{ product.price }} руб/сутки</p>
+            <a class="button" href="">Удалить</a>
+        </div>
+        <br>
+    {% endfor %}
+{% endif %}

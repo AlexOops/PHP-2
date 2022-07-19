@@ -1,26 +1,31 @@
 <?php
+error_reporting(0);
+session_start();
+
 include "../config/Config.php";
 include "../engine/Autoload.php";
 
-use app\engine\{Db, Autoload};
+use app\engine\{Db, Autoload, Render, TwigRender, Request};
 use app\models\{Users, Products, Basket, Feedbacks, Orders};
+use app\config\Config;
 
+require_once "../vendor/autoload.php"; // регистрируется автозагрузчик
 
 spl_autoload_register([new Autoload(), 'loadClass']); // магический метод
 
+$request = new Request();
 
-$products = new Products("Boat",100, "The fastest","img4.jpg", 0);
-//$products->insert();
-//$products->remove($products->id);
-$products->update($products->id);
+$controllerName = $request->getControllerName() ?: 'products';
+$actionName = $request->getActionName();
 
-
-//$products->remove();
-//$products->update();
-
-//$user = new Users('user1', 123, 123);
-//$user->insert();
-
+$controllerClass = Config::CONTROLLER_NAMESPACE . ucfirst($controllerName) . "Controller";
+// минироутинг
+if (class_exists($controllerClass)) {
+    $controller = new $controllerClass(new TwigRender()); // Render()
+    $controller->runAction($actionName); // передали в управление роутеру
+} else {
+    die("404");
+}
 
 
 
