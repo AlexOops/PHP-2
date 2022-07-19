@@ -3,7 +3,7 @@
 namespace app\controllers;
 
 use app\interfaces\IRender;
-use app\models\Users;
+use app\models\{Users, Basket};
 
 abstract class Controller
 {
@@ -32,9 +32,9 @@ abstract class Controller
         if ($this->useLayout) {
             return $this->renderTemplate("layout/" . $this->layout, [ //собирает main
                 'menu' => $this->renderTemplate('menu', [
-                    'isAuth' => Users::isAuth(), // залогинен ли
-                    'username' => Users::getName(), // вернет имя польователя
-
+                'isAuth' => Users::isAuth(), // залогинен ли
+                'username' => Users::getName(), // вернет имя польователя
+                'count' => Basket::getCountWhere('id_session', session_id()),
                 ]),
                 'content' => $this->renderTemplate($template, $params),
             ]);

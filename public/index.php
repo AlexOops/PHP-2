@@ -14,7 +14,7 @@ spl_autoload_register([new Autoload(), 'loadClass']); // магический м
 
 $request = new Request();
 
-$controllerName = $request->getControllerName() ?: 'product';
+$controllerName = $request->getControllerName() ?: 'products';
 $actionName = $request->getActionName();
 
 $controllerClass = Config::CONTROLLER_NAMESPACE . ucfirst($controllerName) . "Controller";

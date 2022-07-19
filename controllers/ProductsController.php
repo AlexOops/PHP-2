@@ -4,7 +4,7 @@ namespace app\controllers;
 
 use app\models\Products;
 
-class ProductController extends Controller
+class ProductsController extends Controller
 {
     public function actionIndex()
     {

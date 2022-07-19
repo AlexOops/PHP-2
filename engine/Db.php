@@ -87,6 +87,7 @@ class Db
 
     public function execute($sql, $params = [])
     {
+        var_dump($sql, $params);
         return $this->query($sql, $params)->rowCount(); // вернет число затронутых строк
     }
 }
