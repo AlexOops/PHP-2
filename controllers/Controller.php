@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\engine\Session;
 use app\interfaces\IRender;
 use app\models\{Users, Basket};
 
@@ -34,7 +35,7 @@ abstract class Controller
                 'menu' => $this->renderTemplate('menu', [
                 'isAuth' => Users::isAuth(), // залогинен ли
                 'username' => Users::getName(), // вернет имя польователя
-                'count' => Basket::getCountWhere('id_session', session_id()),
+                'count' => Basket::getCountWhere('id_session', (new Session())->sessionId()),
                 ]),
                 'content' => $this->renderTemplate($template, $params),
             ]);

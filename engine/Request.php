@@ -9,7 +9,7 @@ class Request
     protected $actionName;
 
     protected $method;
-    protected $params = [];
+    protected $params = []; // данные от пользователя
 
     public function __construct()
     {
@@ -18,7 +18,7 @@ class Request
 
     public function parseRequest()
     {
-        $this->requestString = $url = $_SERVER['REQUEST_URI'];
+        $this->requestString = $_SERVER['REQUEST_URI'];
         $this->method = $_SERVER['REQUEST_METHOD'];
 
         $url = explode('/', $this->requestString);

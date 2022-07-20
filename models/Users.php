@@ -2,6 +2,9 @@
 
 namespace app\models;
 
+use app\engine\Request;
+use app\engine\Session;
+
 class Users extends DBModel
 {
     protected $id;
@@ -26,7 +29,8 @@ class Users extends DBModel
     {
         $user = Users::getOneWhere('login', $login);
         if ($user && password_verify($pass, $user->pass)) {
-            $_SESSION['login'] = $login;
+            (new Session())->set('login', $login);
+//            $_SESSION['login'] = $login;
             return true;
         }
         return false;
@@ -34,17 +38,19 @@ class Users extends DBModel
 
     public static function isAuth() // проверка на логин
     {
-        return isset($_SESSION['login']);
+
+        return (new Session())->get('login') !== null;
+//        return isset($_SESSION['login']);
     }
 
     public static function isAdmin() // проверка на админа
     {
-        return $_SESSION['login'] == 'admin';
+        return (new Session())->get('admin') == 'admin';
     }
 
     public static function getName() // имя залог пользователя
     {
-        return $_SESSION['login'];
+        return (new Session())->get('login');
     }
 
     public static function getTableName()

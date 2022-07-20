@@ -7,7 +7,7 @@
             <p>{{ product.product_name }}</p>
             <img src="/img/{{ product.img }}" alt="{{ product.img }}" width="150">
             <p>{{ product.price }} руб/сутки</p>
-            <a class="button" href="">Удалить</a>
+            <button class="button" data-id="{{ product.basket_id }}">Удалить</button>
         </div>
         <br>
     {% endfor %}

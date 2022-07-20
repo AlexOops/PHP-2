@@ -4,7 +4,7 @@ namespace app\engine;
 
 class Session
 {
-    public function getid()
+    public function sessionId()
     {
         return session_id();
     }
