@@ -12,7 +12,7 @@ btnCatalog.forEach((elem) => {
     });
 });
 
-let btnBasket = document.querySelectorAll('.basket-btn-del');
+let btnBasket = document.querySelectorAll('.button');
 btnBasket.forEach((elem) => {
     elem.addEventListener('click', () => {
         let id = elem.getAttribute('data-id');
@@ -20,8 +20,8 @@ btnBasket.forEach((elem) => {
             async () => {
                 const response = await fetch("/basket/del/?id=" + id);
                 const answer = await response.json();
-                document.getElementById('basket').remove();
                 document.getElementById('count').innerText = answer.count;
+                document.getElementById('basket').remove();
             }
         )();
     });

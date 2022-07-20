@@ -2,8 +2,7 @@
 
 namespace app\controllers;
 
-use app\engine\Request;
-use app\engine\Session;
+use app\engine\{Request, Session};
 use app\models\Basket;
 
 class BasketController extends Controller
@@ -25,7 +24,7 @@ class BasketController extends Controller
 //        header("Location: /products/catalog");
 //        die();
         $response = [
-            'success' => 'ok',
+            'status' => "ok",
             'count' => Basket::getCountWhere('id_session', $id_session)
         ];
         echo json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
@@ -36,14 +35,22 @@ class BasketController extends Controller
     {
         $id_product = (new Request())->getParams()['id'];
         $id_session = (new Session())->sessionId();
-        (new Basket($id_product, $id_session))->delete();
+        $error = "ok";
+
+        $basket = Basket::getOne($id_product);
+        if ($id_session == $basket->id_session) {
+            $basket->delete();
+        } else {
+            $error = "Ошибочка!";
+        }
 
         $response = [
-            'success' => 'ok',
+            'status' => $error,
             'count' => Basket::getCountWhere('id_session', $id_session)
         ];
         echo json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-//        header("Location: /basket/");
+
+//        header("Location: /basket");
         die();
     }
 }

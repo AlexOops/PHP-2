@@ -3,7 +3,7 @@
     <p>Корзина пустая</p>
 {% else %}
     {% for product in basket %}
-        <div class="basket">
+        <div class="basket" id="basket">
             <p>{{ product.product_name }}</p>
             <img src="/img/{{ product.img }}" alt="{{ product.img }}" width="150">
             <p>{{ product.price }} руб/сутки</p>

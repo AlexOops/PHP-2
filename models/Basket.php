@@ -4,7 +4,7 @@ namespace app\models;
 
 use app\engine\Db;
 
-class basket extends DBModel
+class Basket extends DBModel
 {
     protected $id;
     protected $id_product;
