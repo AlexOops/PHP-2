@@ -1,5 +1,5 @@
 <?php
-error_reporting(0);
+//error_reporting(0);
 session_start();
 
 include "../config/Config.php";
@@ -13,19 +13,31 @@ require_once "../vendor/autoload.php"; // регистрируется авто�
 
 spl_autoload_register([new Autoload(), 'loadClass']); // магический метод
 
-$request = new Request();
+try {
 
-$controllerName = $request->getControllerName() ?: 'products';
-$actionName = $request->getActionName();
+    $request = new Request();
 
-$controllerClass = Config::CONTROLLER_NAMESPACE . ucfirst($controllerName) . "Controller";
-// минироутинг
-if (class_exists($controllerClass)) {
-    $controller = new $controllerClass(new TwigRender()); // Render()
-    $controller->runAction($actionName); // передали в управление роутеру
-} else {
-    die("404");
+    $controllerName = $request->getControllerName() ?: 'products';
+    $actionName = $request->getActionName();
+
+    $controllerClass = Config::CONTROLLER_NAMESPACE . ucfirst($controllerName) . "Controller";
+
+    // минироутинг
+    if (class_exists($controllerClass)) {
+        $controller = new $controllerClass(new TwigRender()); // Render()
+        $controller->runAction($actionName); // передали в управление роутеру
+    } else {
+        die("404");
+    }
+
+} catch (\PDOException $e) {
+    var_dump($e->getMessage());
+} catch (\Exception $e){
+    var_dump($e);
 }
+
+
+
 
 
 

@@ -4,7 +4,7 @@ namespace app\engine;
 
 class Session
 {
-    public function sessionId()
+    public function getId()
     {
         return session_id();
     }
@@ -16,7 +16,7 @@ class Session
 
     public function get($key)
     {
-        return $_SESSION[$key];
+        return $_SESSION[$key] ?? null;
     }
 
     public function destroy()
@@ -24,7 +24,7 @@ class Session
         session_destroy();
     }
 
-    public function sessionRegenerateId()
+    public function regenerate()
     {
         session_regenerate_id();
     }

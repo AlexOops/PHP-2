@@ -30,7 +30,6 @@ class Users extends DBModel
         $user = Users::getOneWhere('login', $login);
         if ($user && password_verify($pass, $user->pass)) {
             (new Session())->set('login', $login);
-//            $_SESSION['login'] = $login;
             return true;
         }
         return false;

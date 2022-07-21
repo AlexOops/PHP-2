@@ -1,14 +1,16 @@
 <h2>Корзина</h2>
 {% if basket is empty %}
-    <p>Корзина пустая</p>
+    <p class="empty">Корзина пустая</p>
 {% else %}
-    {% for product in basket %}
-        <div class="basket" id="basket">
-            <p>{{ product.product_name }}</p>
-            <img src="/img/{{ product.img }}" alt="{{ product.img }}" width="150">
-            <p>{{ product.price }} руб/сутки</p>
-            <button class="button" data-id="{{ product.basket_id }}">Удалить</button>
-        </div>
-        <br>
-    {% endfor %}
+    <div class="basket-all" >
+        {% for product in basket %}
+            <div class="basket" id="{{ product.basket_id }}">
+                <p>{{ product.product_name }}</p>
+                <img src="/img/{{ product.img }}" alt="{{ product.img }}" width="150">
+                <p>{{ product.price }} руб/сутки</p>
+                <button class="delete" data-id="{{ product.basket_id }}">Удалить</button>
+            </div>
+            <br>
+        {% endfor %}
+    </div>
 {% endif %}

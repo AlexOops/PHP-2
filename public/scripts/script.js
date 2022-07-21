@@ -12,18 +12,17 @@ btnCatalog.forEach((elem) => {
     });
 });
 
-let btnBasket = document.querySelectorAll('.button');
+let btnBasket = document.querySelectorAll('.delete');
 btnBasket.forEach((elem) => {
     elem.addEventListener('click', () => {
         let id = elem.getAttribute('data-id');
         (
             async () => {
-                const response = await fetch("/basket/del/?id=" + id);
+                const response = await fetch("/basket/delete/?id=" + id);
                 const answer = await response.json();
                 document.getElementById('count').innerText = answer.count;
-                document.getElementById('basket').remove();
+                document.getElementById(id).remove();
             }
         )();
     });
 });
-

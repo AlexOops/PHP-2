@@ -23,8 +23,9 @@ class Request
 
         $url = explode('/', $this->requestString);
 
+
         $this->controllerName = $url[1];
-        $this->actionName = $url[2];
+        $this->actionName = $url[2] ?? null;
 
         $this->params = $_REQUEST;
 

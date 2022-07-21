@@ -25,7 +25,7 @@ class AuthController extends Controller
 
     public function actionLogout()
     {
-        (new Session())->sessionRegenerateId();
+        (new Session())->regenerate();
         (new Session())->destroy();
         header("Location: " . $_SERVER['HTTP_REFERER']);
         die();

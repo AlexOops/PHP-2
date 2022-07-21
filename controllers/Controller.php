@@ -35,7 +35,7 @@ abstract class Controller
                 'menu' => $this->renderTemplate('menu', [
                 'isAuth' => Users::isAuth(), // залогинен ли
                 'username' => Users::getName(), // вернет имя польователя
-                'count' => Basket::getCountWhere('id_session', (new Session())->sessionId()),
+                'count' => Basket::getCountWhere('id_session', (new Session())->getId()),
                 ]),
                 'content' => $this->renderTemplate($template, $params),
             ]);

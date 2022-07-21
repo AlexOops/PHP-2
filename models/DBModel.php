@@ -54,8 +54,7 @@ abstract class DBModel extends Model
     {
         $tableName = static::getTableName();
         $sql = "DELETE FROM {$tableName} WHERE id = :id";
-        $count = Db::getInstance()->execute($sql, ['id' => $this->id]);
-        return print_r("Удалено $count строк.\n"); // пофиксить
+        Db::getInstance()->execute($sql, ['id' => $this->id]);
     }
 
     public function save()

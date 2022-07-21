@@ -9,7 +9,7 @@ class BasketController extends Controller
 {
     public function actionIndex() // весь каталог
     {
-        $id_session = (new Session())->sessionId();
+        $id_session = (new Session())->getId();
         $products = Basket::getBasket($id_session);
         echo $this->render('basket', [
             'basket' => $products,
@@ -19,10 +19,9 @@ class BasketController extends Controller
     public function actionAdd() // в корзину
     {
         $id_product = (new Request())->getParams()['id'];
-        $id_session = (new Session())->sessionId();
+        $id_session = (new Session())->getId();
         (new Basket($id_product, $id_session))->save();
-//        header("Location: /products/catalog");
-//        die();
+
         $response = [
             'status' => "ok",
             'count' => Basket::getCountWhere('id_session', $id_session)
@@ -31,10 +30,10 @@ class BasketController extends Controller
         die();
     }
 
-    public function actionDel() // в корзину
+    public function actionDelete()
     {
         $id_product = (new Request())->getParams()['id'];
-        $id_session = (new Session())->sessionId();
+        $id_session = (new Session())->getId();
         $error = "ok";
 
         $basket = Basket::getOne($id_product);
@@ -49,8 +48,6 @@ class BasketController extends Controller
             'count' => Basket::getCountWhere('id_session', $id_session)
         ];
         echo json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-
-//        header("Location: /basket");
         die();
     }
 }
