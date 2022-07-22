@@ -1,8 +1,9 @@
 <?php
 
-namespace app\models;
+namespace app\models\entities;
+use app\models\Entity;
 
-class Feedbacks extends DBModel
+class Feedbacks extends Entity
 {
     protected $id;
     protected $name;
@@ -20,10 +21,5 @@ class Feedbacks extends DBModel
         $this->name = $name;
         $this->feedback = $feedback;
         $this->id_product = $id_product;
-    }
-
-    public static function getTableName()
-    {
-        return "feedbacks";
     }
 }

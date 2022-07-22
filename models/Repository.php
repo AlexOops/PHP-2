@@ -4,19 +4,20 @@ namespace app\models;
 
 use app\engine\Db;
 
-abstract class DBModel extends Model
+abstract class Repository
 {
-    abstract protected static function getTableName();
+    abstract protected function getTableName();
+    abstract protected function getEntityClass();
 
-    public function insert()
+    public function insert(Entity $entity)
     {
         $fields = [];
         $params = [];
 
-        foreach ($this->props as $key => $value) {
+        foreach ($entity->props as $key => $value) {
             if ($key == "id") continue; // обойти это тело по другому
             $fields[] = $key;
-            $params[":$key"] = $this->$key; // из ключа имя поля
+            $params[":$key"] = $entity->$key; // из ключа имя поля
         }
 
         $fields = implode(", ", $fields);
@@ -25,53 +26,52 @@ abstract class DBModel extends Model
 
         $sql = "INSERT INTO {$tableName}({$fields})VALUES({$values})";
         Db::getInstance()->execute($sql, $params);
-        $this->id = Db::getInstance()->lastInsertid(); //  записали в этот объект id
+        $entity->id = Db::getInstance()->lastInsertid(); //  записали в этот объект id
         return $this;
     }
 
-    public function update()
+    public function update(Entity $entity)
     {
         $fields = [];
         $params = [];
 
-        foreach ($this->props as $key => $value) {
+        foreach ($entity->props as $key => $value) {
             if (!$value) continue; // игнорируем поле, которое не встретилось
             $fields["$key"] .= "{$key} = :{$key}"; // SET('name')('name'=':name')
-            $params[":$key"] = $this->$key;
-            $this->props[$key] = false;
+            $params[":$key"] = $entity->$key;
+            $entity->props[$key] = false;
         }
 
-        $tableName = static::getTableName();
+        $tableName = $this->getTableName();
         $fields = implode(", ", $fields);
-        $params['id'] = $this->id;
+        $params['id'] = $entity->id;
 
         $sql = "UPDATE {$tableName} SET {$fields} WHERE id = :id";
         Db::getInstance()->execute($sql, $params);
         return $this;
     }
 
-    public function delete()
+    public function delete(Entity $entity)
     {
-        $tableName = static::getTableName();
+        $tableName = $this->getTableName();
         $sql = "DELETE FROM {$tableName} WHERE id = :id";
-        Db::getInstance()->execute($sql, ['id' => $this->id]);
+        Db::getInstance()->execute($sql, ['id' => $entity->id]);
     }
 
-    public function save()
+    public function save(Entity $entity)
     {
-        if (is_null($this->id)) {
-            $this->insert();
+        if (is_null($entity->id)) {
+            $this->insert($entity);
         } else {
-            $this->update();
+            $this->update($entity);
         }
     }
 
-    public static function getOne($id)
+    public function getOne($id)
     {
-        $tableName = static::getTableName();
+        $tableName = $this->getTableName();
         $sql = "SELECT * FROM {$tableName} WHERE id = :id";
-//        return Db::getInstance()->queryOne($sql, ['id' => $id]); //getInstance() позволит статично обратиться к Db
-        $result = Db::getInstance()->queryOneObject($sql, ['id' => $id], get_called_class()); // Вернет объект
+        $result = Db::getInstance()->queryOneObject($sql, ['id' => $id], $this->getEntityClass()); // Вернет объект
         if ($result) {
             return $result;
         } else {
@@ -79,31 +79,31 @@ abstract class DBModel extends Model
         }
     }
 
-    public static function getLimit($limit)
+    public function getLimit($limit)
     {
-        $tableName = static::getTableName();
+        $tableName = $this->getTableName();
         $sql = "SELECT * FROM {$tableName} LIMIT 0, ?";
         return Db::getInstance()->queryLimit($sql, $limit); // текст запроса и значение
     }
 
-    public static function getAll()
+    public function getAll()
     {
-        $tableName = static::getTableName();
+        $tableName = $this->getTableName();
         $sql = "SELECT * FROM {$tableName}";
         return Db::getInstance()->queryAll($sql);
 
     }
 
-    public static function getOneWhere($name, $value) // авторизация
+    public function getOneWhere($name, $value) // авторизация
     {
-        $tableName = static::getTableName();
+        $tableName = $this->getTableName();
         $sql = "SELECT * FROM {$tableName} WHERE `{$name}` = :value";
-        return Db::getInstance()->queryOneObject($sql, ['value' => $value], static::class);
+        return Db::getInstance()->queryOneObject($sql, ['value' => $value], $this->getEntityClass());
     }
 
-    public static function getCountWhere($name, $value)
+    public function getCountWhere($name, $value)
     {
-        $tableName = static::getTableName();
+        $tableName = $this->getTableName();
         $sql = "SELECT count(id) as count FROM {$tableName} WHERE `{$name}` = :value";
         return Db::getInstance()->queryOne($sql, ['value' => $value])['count'];
     }

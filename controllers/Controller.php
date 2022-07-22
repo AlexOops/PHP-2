@@ -4,7 +4,7 @@ namespace app\controllers;
 
 use app\engine\Session;
 use app\interfaces\IRender;
-use app\models\{Users, Basket};
+use app\models\repositories\{UsersRepository, BasketRepository};
 
 abstract class Controller
 {
@@ -33,9 +33,9 @@ abstract class Controller
         if ($this->useLayout) {
             return $this->renderTemplate("layout/" . $this->layout, [ //собирает main
                 'menu' => $this->renderTemplate('menu', [
-                'isAuth' => Users::isAuth(), // залогинен ли
-                'username' => Users::getName(), // вернет имя польователя
-                'count' => Basket::getCountWhere('id_session', (new Session())->getId()),
+                    'isAuth' => (new UsersRepository())->isAuth(), // залогинен ли
+                    'username' => (new UsersRepository())->getName(), // вернет имя польователя
+                    'count' => (new BasketRepository())->getCountWhere('id_session', (new Session())->getId()),
                 ]),
                 'content' => $this->renderTemplate($template, $params),
             ]);

@@ -2,10 +2,8 @@
 
 namespace app\models;
 
-use app\interfaces\IModel;
 
-
-abstract class Model implements IModel
+abstract class Entity
 {
     protected $props = []; //обнуляем, чтобы был доступен
 
