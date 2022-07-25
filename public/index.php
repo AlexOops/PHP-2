@@ -3,19 +3,18 @@
 session_start();
 
 include "../config/Config.php";
-include "../engine/Autoload.php";
+//include "../engine/Autoload.php";
 
 use app\engine\{Db, Autoload, Render, TwigRender, Request};
-use app\models\{Users, Products, Basket, Feedbacks, Orders};
 use app\config\Config;
 
 require_once "../vendor/autoload.php"; // регистрируется автозагрузчик
 
-spl_autoload_register([new Autoload(), 'loadClass']); // магический метод
+//spl_autoload_register([new Autoload(), 'loadClass']); // магический метод
 
 try {
 
-    $request = new Request();
+    $request = new Request;
 
     $controllerName = $request->getControllerName() ?: 'products';
     $actionName = $request->getActionName();

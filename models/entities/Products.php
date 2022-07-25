@@ -20,7 +20,7 @@ class Products extends Entity
         "likes" => false,
     ];
 
-    public function __construct($name = null, $price = null, $description = null, $img = null, $likes = null)
+    public function __construct($name = null, int $price = null, $description = null, $img = null, $likes = null)
     {
         $this->name = $name;
         $this->price = $price;

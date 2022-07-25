@@ -1,6 +1,12 @@
 {
-    "require": {
-        "twig/twig": "3.0",
-      "ext-pdo": "*"
+  "require": {
+    "twig/twig": "3.0",
+    "ext-pdo": "*",
+    "phpunit/phpunit": "^9.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "app\\": ""
     }
+  }
 }
